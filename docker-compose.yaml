@@ -40,6 +40,6 @@ services:
       - "4000:4000"
     environment:
       - OLLAMA_API_BASE=http://ollama:11434
-    command: [ "--model", "ollama/qwen2.5-coder:32b", "--alias", "claude-sonnet-4-6:ollama/qwen2.5-coder:32b", "--drop_params" ]
+    command: [ "--model", "ollama/qwen2.5-coder:32b", "--alias", "claude-sonnet-4-6:ollama/qwen2.5-coder:32b", "--drop_params", "--enable_tool_use" ]
 
 
