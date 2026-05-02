@@ -1,25 +1,4 @@
--architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
-    https://download.docker.com/linux/ubuntu \
-    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
-    | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-  sudo apt-get update -qq
-  sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-
-  info "Docker installed: $(docker --version)"
-  info "Docker Compose installed: $(docker compose version)"
-}
-
-if command -v docker &>/dev/null && docker compose version &>/dev/null 2>&1; then
-  info "Docker and docker-compose-plugin already installed, skipping."
-else
-  install_docker
-fi
-
-# ─── 2. NVIDIA Driver ────────────────────────────────────────────────────────
-
-if ! command -v nvidia-smi &>/dev/null; then
-  warn "#!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 # Colors
@@ -46,7 +25,28 @@ install_docker() {
   sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
   echo \
-    "deb [arch=$(dpkg --printnvidia-smi not found. Installing NVIDIA drivers..."
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+    https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+    | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+  sudo apt-get update -qq
+  sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+  info "Docker installed: $(docker --version)"
+  info "Docker Compose installed: $(docker compose version)"
+}
+
+if command -v docker &>/dev/null && docker compose version &>/dev/null 2>&1; then
+  info "Docker and docker-compose-plugin already installed, skipping."
+else
+  install_docker
+fi
+
+# ─── 2. NVIDIA Driver ────────────────────────────────────────────────────────
+
+if ! command -v nvidia-smi &>/dev/null; then
+  warn "nvidia-smi not found. Installing NVIDIA drivers..."
   sudo apt-get install -y ubuntu-drivers-common
   sudo ubuntu-drivers autoinstall
   warn "NVIDIA driver installed. A reboot is required before continuing."
