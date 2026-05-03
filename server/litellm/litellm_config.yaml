@@ -1,0 +1,31 @@
+# litellm_config.yaml
+model_list:
+#  - model_name: claude-sonnet-4-5        # имя которое видит Claude Code
+#    litellm_params:
+#      model: ollama/qwen3.6:35b-a3b-q4_K_M
+#      api_base: http://76.69.188.175:21074
+#      max_input_tokens: 24000            # режет до отправки, оставляет запас под output
+#      num_retries: 2
+
+  - model_name: qwen3.6:35b-a3b-q4_K_M            # если нужен алиас под opus
+    litellm_params:
+      model: ollama_chat/qwen3.6:35b-a3b-q4_K_M
+      api_base: http://76.69.188.175:21074
+      max_tokens: 49152        # размер контекста
+      max_input_tokens: 40000  # LiteLLM будет резать входящие до этого
+      max_output_tokens: 8192
+      input_cost_per_token: 0.000001  # ← без этого обрезка не работает
+      output_cost_per_token: 0.000001
+      extra_body:
+        options:
+          num_ctx: 49152
+          #num_keep: -1
+          num_keep: 0
+
+litellm_settings:
+  drop_params: true                      # убирает неизвестные Ollama параметры
+#  max_input_tokens: 24000
+  request_timeout: 600                   # 10 минут, длинные запросы не прерывать
+
+general_settings:
+  disable_auth: true

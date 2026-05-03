@@ -5,7 +5,8 @@ services:
     volumes:
       - ./ollama_data:/root/.ollama
     environment:
-      - OLLAMA_NUM_GPU=65
+    #  - OLLAMA_NUM_GPU=65
+      - OLLAMA_NUM_CTX=131249
     # Опционально: если есть GPU
     deploy:
       resources:
